@@ -10,10 +10,23 @@ from torchvision.datasets import ImageFolder
 
 IMG_SIZE = 128
 BATCH_SIZE = 32
-EPOCHS = 20
+EPOCHS = 15
 DATA_DIR = "data"
 
-transform = transforms.Compose([
+train_transform = transforms.Compose([
+    transforms.Grayscale(num_output_channels=1),
+    transforms.Resize((IMG_SIZE, IMG_SIZE)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomRotation(degrees=15),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.1),
+    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),
+    transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+    transforms.RandomErasing(p=0.25),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5], std=[0.5]),
+])
+
+test_transform = transforms.Compose([
     transforms.Grayscale(),
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.ToTensor(),
@@ -34,7 +47,7 @@ class SafeImageFolder(ImageFolder):
 
 dataset = SafeImageFolder(
     root=DATA_DIR,
-    transform=transform
+    transform=None
 )
 
 train_size = int(0.8 * len(dataset))
@@ -43,6 +56,9 @@ test_size = len(dataset) - train_size
 train_set, test_set = torch.utils.data.random_split(
     dataset, [train_size, test_size]
 )
+
+train_set.dataset.transform = train_transform
+test_set.dataset.transform  = test_transform
 
 train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = DataLoader(test_set, batch_size=BATCH_SIZE)
