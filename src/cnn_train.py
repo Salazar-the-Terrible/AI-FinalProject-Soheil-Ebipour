@@ -14,15 +14,17 @@ EPOCHS = 15
 DATA_DIR = "data"
 
 train_transform = transforms.Compose([
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.1),
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.RandomHorizontalFlip(p=0.5),
     transforms.RandomRotation(degrees=15),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.1),
     transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),
     transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
-    transforms.RandomErasing(p=0.25),
+    #transforms.AutoAugment(transforms.AutoAugmentPolicy.IMAGENET),
+    transforms.RandAugment(),
     transforms.ToTensor(),
+    transforms.RandomErasing(p=0.25),
     transforms.Normalize(mean=[0.5], std=[0.5]),
 ])
 
