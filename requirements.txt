@@ -1,0 +1,14 @@
+tensorflow
+opencv-python
+numpy
+matplotlib
+scikit-learn
+
+torch 
+torchvision 
+torchaudio
+opencv-python
+scikit-learn 
+scikit-image
+
+skimage
