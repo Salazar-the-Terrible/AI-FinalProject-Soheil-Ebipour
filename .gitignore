@@ -1,3 +1,5 @@
 .venv
 *.jpg
 *.pyc
+*.pth
+*.pkl
