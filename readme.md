@@ -3,4 +3,5 @@ This project aims to produce a model that can tell apart cat images from dog ima
 Training images should be placed in the data folder and be divided into 2 subfolders named "cat" and "dog".
 
 To run the training, simply run the cnn_train script.
+There is an alternative classic-cnn-train script that uses canny transform.
 To test, run the ui.py script.
